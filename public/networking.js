@@ -1,6 +1,4 @@
-import { Client } from "https://cdn.jsdelivr.net/npm/colyseus.js@0.15.4/dist/colyseus.js";
-
-const client = new Client("wss://my-game-aapb.onrender.com");
+const client = new window.Colyseus.Client("wss://my-game-aapb.onrender.com");
 let room;
 
 async function joinRoom() {
