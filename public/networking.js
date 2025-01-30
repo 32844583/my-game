@@ -1,37 +1,25 @@
-const client = new Colyseus.Client("wss://my-game-aapb.onrender.com");
-let room;
+// networking.js (Socket.IO 版本)
 
-async function joinRoom() {
-    try {
-        room = await client.joinOrCreate("game_room");
-        console.log("✅ 成功加入房間", room.sessionId);
-
-        room.onMessage("players_update", (data) => {
-            console.log("📨 收到房間狀態:", data);
-            document.getElementById("status").innerText = JSON.stringify(data);
-        });
-
-    } catch (err) {
-        console.error("❌ 無法加入房間", err);
-    }
-}
+// 假如你的伺服器位於同網域/同網址，就可以直接空白 io()
+const socket = io("http://localhost:3000");
+socket.on("connect", () => {
+    console.log("本機連線成功，socket.id =", socket.id);
+});
+// 如果你要指定網址，可以使用：
+// const socket = io("wss://my-game-aapb.onrender.com");
+// 但實際上 socket.io 預設會用 https:// 或 wss:// 動態連線
 
 document.getElementById("player1-ready").addEventListener("click", () => {
-    if (!room || room.connection.state !== "open") {
-        console.error("⚠️ 無法發送訊息，房間尚未連接或 WebSocket 已關閉");
-        return;
-    }
-    console.log("📨 發送玩家準備訊息", room.sessionId);
-    room.send("ready", { player: 1 });
+  socket.emit("ready", { player: 1 });
 });
 
 document.getElementById("player2-ready").addEventListener("click", () => {
-    if (room && room.connection && room.connection.isOpen) {
-        room.send("ready", { player: 2 });
-    } else {
-        console.error("房間尚未連接，無法發送訊息。");
-    }
-    
+  socket.emit("ready", { player: 2 });
 });
 
-joinRoom();
+// 接收後端廣播
+socket.on("players_update", (data) => {
+  document.getElementById("status").innerText = `玩家 ${data.player} 已準備！`;
+});
+
+console.log("Socket.IO 已載入, socket =", socket);

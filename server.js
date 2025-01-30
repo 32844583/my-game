@@ -1,35 +1,33 @@
+// server.js (Socket.IO 版本)
 const express = require("express");
-const { Server } = require("@colyseus/core");
-const { WebSocketTransport } = require("@colyseus/ws-transport");
-const { createServer } = require("http");
-const { MyRoom } = require("./MyRoom");
-const cors = require("cors"); // ✨ 新增這一行
+const http = require("http");         // Node.js 原生 http
+const { Server } = require("socket.io"); // socket.io
 
 const app = express();
-const server = createServer(app);
+const server = http.createServer(app);
+const io = new Server(server);
 
-// ✨ 設定 CORS，允許前端連線
-app.use(cors({
-    origin: "*",  // 🔥 允許所有來源，或改成你的網域 "http://localhost:3000"
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"]
-}));
-
-// 設定 Colyseus WebSocket 伺服器
-const gameServer = new Server({
-    transport: new WebSocketTransport({
-        server, // 共享 HTTP 伺服器
-    }),
-});
-
-// 定義遊戲房間
-gameServer.define("game_room", MyRoom).enableRealtimeListing();
-
-// 設定 Express 提供靜態檔案
+// 靜態資源 (前端)
 app.use(express.static("public"));
 
-// 啟動伺服器，PORT 需符合 Render 要求
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-    console.log(`🚀 伺服器運行中：http://localhost:${PORT}`);
+// Socket.IO 連線邏輯
+io.on("connection", (socket) => {
+  console.log("有玩家連上來了，socket.id =", socket.id);
+
+  // 監聽「ready」事件
+  socket.on("ready", (data) => {
+    console.log(`玩家 ${data.player} 準備！`);
+
+    // 廣播給所有連線玩家
+    io.emit("players_update", { player: data.player });
+  });
+
+  // 玩家離線
+  socket.on("disconnect", () => {
+    console.log(`玩家離線，socket.id = ${socket.id}`);
+  });
+});
+
+server.listen(3000, () => {
+  console.log("🚀 伺服器運行中：http://localhost:3000");
 });

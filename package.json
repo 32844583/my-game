@@ -11,8 +11,8 @@
   "description": "",
   "dependencies": {
     "@colyseus/schema": "^2.0.36",
-    "colyseus": "^0.15.57",
     "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
   }
 }

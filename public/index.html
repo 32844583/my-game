@@ -1,33 +1,28 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>多人對戰遊戲</title>
+  <meta charset="UTF-8">
+  <title>多人對戰遊戲 (Socket.IO CDN 版)</title>
 </head>
 <body>
-    <h1>歡迎來到多人對戰遊戲</h1>
-    <canvas id="gameCanvas"></canvas>
-    
-    <div id="lobby">
-        <button id="player1-ready">玩家 1 準備</button>
-        <button id="player2-ready">玩家 2 準備</button>
-        <p id="status">等待玩家準備...</p>
-    </div>
+  <h1>歡迎來到多人對戰遊戲</h1>
+  <canvas id="gameCanvas"></canvas>
+  
+  <div id="lobby">
+      <button id="player1-ready">玩家 1 準備</button>
+      <button id="player2-ready">玩家 2 準備</button>
+      <p id="status">等待玩家準備...</p>
+  </div>
 
-    <!-- 遊戲相關腳本 -->
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.87.0/dist/phaser.min.js"></script>
-    
-    <!-- WebSocket 連線 -->
-    <script src="https://unpkg.com/colyseus.js@0.15.26/dist/colyseus.js"></script>
+  <!-- 其他框架／引擎等 -->
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.87.0/dist/phaser.min.js"></script>
 
-    <!-- 本地腳本 -->
-    <script src="character.js" defer></script>
-    <script src="game.js" defer></script>
-    <script src="networking.js" defer></script>
-    <script>
-        console.log("Colyseus:", Colyseus);
-    </script>
-    
+  <!-- Socket.IO Client from CDN -->
+  <script src="https://cdn.socket.io/4.8.1/socket.io.min.js" integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+" crossorigin="anonymous"></script>
+
+  <!-- 你的自定義腳本 -->
+  <script src="character.js"></script>
+  <script src="game.js"></script>
+  <script src="networking.js"></script>
 </body>
 </html>
