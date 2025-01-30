@@ -1,27 +1,35 @@
 const express = require("express");
-const { Server } = require("colyseus");
-const { createServer } = require("http");
-const { MyRoom } = require("./MyRoom.js");
+const { Server } = require("@colyseus/core");
 const { WebSocketTransport } = require("@colyseus/ws-transport");
+const { createServer } = require("http");
+const { MyRoom } = require("./MyRoom");
+const cors = require("cors"); // ✨ 新增這一行
 
 const app = express();
 const server = createServer(app);
+
+// ✨ 設定 CORS，允許前端連線
+app.use(cors({
+    origin: "*",  // 🔥 允許所有來源，或改成你的網域 "http://localhost:3000"
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
+// 設定 Colyseus WebSocket 伺服器
 const gameServer = new Server({
     transport: new WebSocketTransport({
-          //  可以設定 ping 間隔時間 (單位：毫秒)，預設是 20000
-         // pingInterval: 20000,
-         // 可以設定 ping 最大重試次數，預設是 3
-         // pingMaxRetries: 3,
-          server: server, // 請使用你的 http server 
-          // verifyClient: (info, cb) => { // 自訂驗證方法，可參考官方文件
-          //  cb(true);
-         // }
-    })
-  });
-gameServer.define("game_room", MyRoom);
+        server, // 共享 HTTP 伺服器
+    }),
+});
 
+// 定義遊戲房間
+gameServer.define("game_room", MyRoom).enableRealtimeListing();
+
+// 設定 Express 提供靜態檔案
 app.use(express.static("public"));
 
-server.listen(3000, () => {
-    console.log("🚀 伺服器運行中：http://localhost:3000");
+// 啟動伺服器，PORT 需符合 Render 要求
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`🚀 伺服器運行中：http://localhost:${PORT}`);
 });
