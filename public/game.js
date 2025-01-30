@@ -1,55 +1,35 @@
-// Phaser 遊戲初始化
-const config = {
+// game.js
+
+// 讓外部能存取 Phaser 場景
+const PhaserSingleton = {
+  scene: null,
+};
+
+/**
+ * 建立並啟動 Phaser 遊戲。
+ * 若想在網頁載入時就自動啟動，則可直接把 new Phaser.Game(...) 寫在最外層。
+ */
+window.startGame = function() {
+  const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    scale: {
+      mode: Phaser.Scale.FIT,   // 或 Phaser.Scale.RESIZE
+      autoCenter: Phaser.Scale.CENTER_BOTH,
+      width: 800,   // 基礎寬
+      height: 600,  // 基礎高
+    },
+    parent: "battle",
     physics: {
       default: "matter",
       matter: {
         gravity: { y: 0 },
-        debug: false
-      }
+        debug: false,
+      },
     },
-    scene: { preload, create, update }
+    // 注意：若以 class 寫法，這裡用陣列引入
+    scene: [BattleScene],
   };
-  
-  function preload() {
-    this.load.image("mano_base", "assets/char/mano/base.png");
-    this.load.image("mano_atk",  "assets/char/mano/atk.png");
-    this.load.image("mano_hurt", "assets/char/mano/hurt.png");
-    this.load.image("mano_die",  "assets/char/mano/die.png");
-  
-    this.load.image("stone_base", "assets/char/stone/base.png");
-    this.load.image("stone_atk",  "assets/char/stone/atk.png");
-    this.load.image("stone_hurt", "assets/char/stone/hurt.png");
-    this.load.image("stone_die",  "assets/char/stone/die.png");
-  }
-  
-  function create() {
-    this.cameras.main.setBackgroundColor("#87CEEB");
-  
-    // 建立角色 (注意：我們用 window.Char)
-    new window.Char(this, 100, 300, "mano", true);
-    new window.Char(this, 700, 300, "stone", false);
-  
-    // 碰撞
-    this.matter.world.on("collisionstart", (event) => {
-      event.pairs.forEach((pair) => {
-        const CharA = window.Chars.find(p => p.sprite === pair.bodyA.gameObject);
-        const CharB = window.Chars.find(p => p.sprite === pair.bodyB.gameObject);
-  
-        if (CharA && CharB && !CharA.isDead && !CharB.isDead) {
-          CharA.attack(CharB);
-          CharB.attack(CharA);
-        }
-      });
-    });
-  }
-  
-  function update() {
-    // 每禎更新所有角色
-    window.Chars.forEach(p => p.update());
-  }
-  
-  const game = new Phaser.Game(config);
-  
+
+  // 建立 Phaser.Game 實例
+  new Phaser.Game(config);
+};
