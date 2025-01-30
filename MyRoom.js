@@ -1,24 +1,24 @@
-const { Room } = require("colyseus");
+const colyseus = require("colyseus");
 
-class MyRoom extends Room {
+class MyRoom extends colyseus.Room {
     onCreate() {
-        console.log("🚀 遊戲房間建立");
-        this.setState({ players: {} });
+        this.setState({ playersReady: {} });
 
-        this.onMessage("move", (client, data) => {
-            this.state.players[client.sessionId] = data;
-            this.broadcast("state", this.state.players);
+        this.onMessage("ready", (client, message) => {
+            this.state.playersReady[message.player] = true;
+            console.log(`玩家 ${message.player} 準備！`);
+
+            // 廣播給所有玩家
+            this.broadcast("player_ready", { player: message.player });
         });
     }
 
     onJoin(client) {
-        console.log(client.sessionId, "加入房間");
-        this.state.players[client.sessionId] = { x: 0, y: 0 };
+        console.log(`${client.sessionId} 加入房間`);
     }
 
     onLeave(client) {
-        console.log(client.sessionId, "離開房間");
-        delete this.state.players[client.sessionId];
+        console.log(`${client.sessionId} 離開房間`);
     }
 }
 
