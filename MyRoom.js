@@ -9,7 +9,7 @@ class MyRoom extends colyseus.Room {
             console.log(`玩家 ${message.player} 準備！`);
 
             // 廣播給所有玩家
-            this.broadcast("player_ready", { player: message.player });
+            this.broadcast("players_update", this.state.playersReady);
         });
     }
 
