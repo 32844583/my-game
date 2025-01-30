@@ -4,12 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>多人對戰遊戲</title>
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.87.0/dist/phaser.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/colyseus.js@0.15.4/dist/colyseus.js"></script> <!-- 這是客戶端的 -->
-    <!-- 你的檔案 (順序很重要) -->
-    <script src="character.js"></script>
-    <script src="game.js"></script>
-    <script src="networking.js"></script></head>
 <body>
     <h1>歡迎來到多人對戰遊戲</h1>
     <canvas id="gameCanvas"></canvas>
@@ -19,7 +13,11 @@
         <button id="player2-ready">玩家 2 準備</button>
         <p id="status">等待玩家準備...</p>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.87.0/dist/phaser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/colyseus.js@0.15.4/dist/colyseus.js"></script>
+    <script src="character.js"></script>
+    <script src="game.js"></script>
+    <script src="networking.js"></script>
 </body>
 
 </html>
