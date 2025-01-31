@@ -1,4 +1,4 @@
-networking.js
+// networking.js
 const socket = io("https://my-game-aapb.onrender.com", {
   withCredentials: true,
   transports: ['websocket', 'polling']
