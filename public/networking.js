@@ -1,9 +1,9 @@
-// networking.js
-// const socket = io("https://my-game-aapb.onrender.com", {
-//   withCredentials: true,
-//   transports: ['websocket', 'polling']
-// });
-const socket = io("http://localhost:3000");
+networking.js
+const socket = io("https://my-game-aapb.onrender.com", {
+  withCredentials: true,
+  transports: ['websocket', 'polling']
+});
+// const socket = io("http://localhost:3000");
 
 let player1Ready = false;
 let player2Ready = false;

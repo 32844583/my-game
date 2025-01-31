@@ -5,20 +5,20 @@ const { Server } = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
-// const io = new Server(server, {
-//   cors: {
-//     origin: ["https://my-game-aapb.onrender.com"],
-//     methods: ["GET", "POST"],
-//     credentials: true,
-//     allowedHeaders: ["Content-Type"]
-//   }
-// });
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"]
+    origin: ["https://my-game-aapb.onrender.com"],
+    methods: ["GET", "POST"],
+    credentials: true,
+    allowedHeaders: ["Content-Type"]
   }
 });
+// const io = new Server(server, {
+//   cors: {
+//     origin: "http://localhost:3000",
+//     methods: ["GET", "POST"]
+//   }
+// });
 app.use(express.static("public"));
 
 // 添加 Express CORS 中間件
