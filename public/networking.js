@@ -1,90 +1,126 @@
 // networking.js
-
-const socket = io("https://my-game-aapb.onrender.com");
-
-socket.on("both_ready", () => {
-  document.getElementById("summon-container").style.display = "block";
-});
+// const socket = io("https://my-game-aapb.onrender.com", {
+//   withCredentials: true,
+//   transports: ['websocket', 'polling']
+// });
+const socket = io("http://localhost:3000");
 
 let player1Ready = false;
 let player2Ready = false;
 let player1Side = null;
 let player2Side = null;
-let gameStarted = false; // 防止重複執行 startGame()
+let gameStarted = false;
+let currentPlayer = null;
 
-/************************
- * 監聽「準備」按鈕事件
- ************************/
-document.getElementById("player1-ready").addEventListener("click", () => {
-  player1Ready = true;
+socket.on("connect", () => {
+  console.log("Connected to server");
+});
+
+socket.on("player_number", (number) => {
+  currentPlayer = number;
+  console.log(`You are Player ${number}`);
+  updateUI();
+});
+
+socket.on("player_ready", (data) => {
+  if (data.player === 1) {
+    player1Ready = true;
+    document.getElementById("player1-ready").textContent = "Ready!";
+  }
+  if (data.player === 2) {
+    player2Ready = true;
+    document.getElementById("player2-ready").textContent = "Ready!";
+  }
   checkBothReady();
+});
+
+let gameInstance = null;
+
+socket.on("game_start", (data) => {
+  player1Side = data.player1Side;
+  player2Side = data.player2Side;
+  
+  document.getElementById("lobby").style.display = "none";
+  document.getElementById("battle").style.display = "block";
+  document.getElementById("summon-container").style.display = "block";
+  
+  if (!gameInstance) {
+    gameInstance = startGame();
+  }
+});
+
+socket.on("monster_summoned", (data) => {
+  const { monsterKey, player, side } = data;
+  summonMonster(monsterKey, player);
+});
+
+document.getElementById("player1-ready").addEventListener("click", () => {
+  if (currentPlayer === 1 && !player1Ready) {
+    socket.emit("ready", { player: 1 });
+  }
 });
 
 document.getElementById("player2-ready").addEventListener("click", () => {
-  player2Ready = true;
-  checkBothReady();
+  if (currentPlayer === 2 && !player2Ready) {
+    socket.emit("ready", { player: 2 });
+  }
 });
 
-/************************
- * 檢查雙方是否都準備好
- ************************/
 function checkBothReady() {
   if (player1Ready && player2Ready && !gameStarted) {
-    // 隨機分配 side
-    if (Math.random() < 0.5) {
-      player1Side = "left";
-      player2Side = "right";
-    } else {
-      player1Side = "right";
-      player2Side = "left";
-    }
-
-    console.log(`玩家1 side = ${player1Side}`);
-    console.log(`玩家2 side = ${player2Side}`);
-
-    // 顯示狀態
-    document.getElementById("status").textContent = "雙方都準備完成，進入戰鬥！";
-
-    // 隱藏 lobby, 顯示 battle 區域
-    document.getElementById("lobby").style.display  = "none";
-    document.getElementById("battle").style.display = "block";
-    // 顯示召喚按鈕
-    document.getElementById("summon-container").style.display = "block";
-
-    // 呼叫 game.js 中的 startGame() 來初始化 Phaser
-    window.startGame();
-    gameStarted = true;
+    socket.emit("both_ready");
   }
 }
 
-/************************
- * 召喚怪物
- * @param {string} monsterKey - e.g. "mano", "stone"
- * @param {number} player - 1 or 2
- ************************/
 function summonMonster(monsterKey, player) {
-  // 根據玩家取得 side
-  let side = (player === 1) ? player1Side : player2Side;
-  if (!side) {
-    console.warn("召喚失敗：尚未分配 side 或玩家未準備。");
+  // Prevent repeated summons
+  if (window.lastSummonTime && Date.now() - window.lastSummonTime < 1000) {
     return;
   }
+  window.lastSummonTime = Date.now();
 
-  // 依 side 決定角色起始座標 & flipX
-  let x, y = 300, flipX;
-  if (side === "left") {
-    x = 100;
-    flipX = true;
-  } else {
-    x = 700;
-    flipX = false;
+  const side = (player === 1) ? player1Side : player2Side;
+  if (!side) return;
+
+  const x = (side === "left") ? 100 : 700;
+  const y = 300;
+  const flipX = (side === "left");
+
+  if (player === currentPlayer) {
+    socket.emit("summon_monster", {
+      monsterKey,
+      player,
+      side
+    });
   }
 
-  // 建立角色（需依賴 character.js + BattleScene）
-  new window.Char(PhaserSingleton.scene, x, y, monsterKey, flipX, side);
+  // Create character instance only once
+  if (!window.activeCharacters) {
+    window.activeCharacters = new Map();
+  }
 
-  console.log(`玩家${player}(${side}) 召喚了 ${monsterKey}`);
+  const charKey = `${monsterKey}_${player}_${Date.now()}`;
+  const char = new window.Char(PhaserSingleton.scene, x, y, monsterKey, flipX, side);
+  window.activeCharacters.set(charKey, char);
 }
 
-// 讓前端按鈕可直接呼叫 summonMonster
+// Add cleanup function
+function cleanupCharacter(charKey) {
+  const char = window.activeCharacters.get(charKey);
+  if (char) {
+    char.destroy();
+    window.activeCharacters.delete(charKey);
+  }
+}
+
+function updateUI() {
+  const readyButton = (currentPlayer === 1) ? 
+    document.getElementById("player1-ready") : 
+    document.getElementById("player2-ready");
+  
+  if (readyButton) {
+    readyButton.disabled = false;
+  }
+}
+
 window.summonMonster = summonMonster;

@@ -1,34 +1,69 @@
-// server.js (Socket.IO 版本)
+// server.js
 const express = require("express");
-const http = require("http");         // Node.js 原生 http
-const { Server } = require("socket.io"); // socket.io
+const http = require("http");
+const { Server } = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
-
-// 靜態資源 (前端)
+// const io = new Server(server, {
+//   cors: {
+//     origin: ["https://my-game-aapb.onrender.com"],
+//     methods: ["GET", "POST"],
+//     credentials: true,
+//     allowedHeaders: ["Content-Type"]
+//   }
+// });
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+});
 app.use(express.static("public"));
 
-// Socket.IO 連線邏輯
+// 添加 Express CORS 中間件
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  next();
+});
+
+
+
+let players = new Map();
+let playerCount = 0;
+
 io.on("connection", (socket) => {
-  console.log("有玩家連上來了，socket.id =", socket.id);
+  playerCount++;
+  if (playerCount <= 2) {
+    players.set(socket.id, playerCount);
+    socket.emit("player_number", playerCount);
+  }
 
-  // 監聽「ready」事件
   socket.on("ready", (data) => {
-    console.log(`玩家 ${data.player} 準備！`);
-
-    // 廣播給所有連線玩家
-    io.emit("players_update", { player: data.player });
+    io.emit("player_ready", data);
   });
 
-  // 玩家離線
+  socket.on("both_ready", () => {
+    const sides = Math.random() < 0.5 ? 
+      { player1Side: "left", player2Side: "right" } :
+      { player1Side: "right", player2Side: "left" };
+    
+    io.emit("game_start", sides);
+  });
+
+  socket.on("summon_monster", (data) => {
+    io.emit("monster_summoned", data);
+  });
+
   socket.on("disconnect", () => {
-    console.log(`玩家離線，socket.id = ${socket.id}`);
+    playerCount--;
+    players.delete(socket.id);
   });
 });
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-  console.log(`伺服器運行中：http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

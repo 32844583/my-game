@@ -10,13 +10,15 @@ const PhaserSingleton = {
  * 若想在網頁載入時就自動啟動，則可直接把 new Phaser.Game(...) 寫在最外層。
  */
 window.startGame = function() {
+  if (gameInstance) return gameInstance;
+  
   const config = {
     type: Phaser.AUTO,
     scale: {
-      mode: Phaser.Scale.FIT,   // 或 Phaser.Scale.RESIZE
+      mode: Phaser.Scale.FIT,
       autoCenter: Phaser.Scale.CENTER_BOTH,
-      width: 800,   // 基礎寬
-      height: 600,  // 基礎高
+      width: 800,
+      height: 600,
     },
     parent: "battle",
     physics: {
@@ -26,10 +28,8 @@ window.startGame = function() {
         debug: false,
       },
     },
-    // 注意：若以 class 寫法，這裡用陣列引入
     scene: [BattleScene],
   };
 
-  // 建立 Phaser.Game 實例
-  new Phaser.Game(config);
+  return new Phaser.Game(config);
 };
