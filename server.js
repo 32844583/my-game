@@ -46,10 +46,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("both_ready", () => {
-    const sides = Math.random() < 0.5 ? 
-      { player1Side: "left", player2Side: "right" } :
-      { player1Side: "right", player2Side: "left" };
-    
+    const sides = { player1Side: "left", player2Side: "right" }
     io.emit("game_start", sides);
   });
 
@@ -61,6 +58,7 @@ io.on("connection", (socket) => {
     playerCount--;
     players.delete(socket.id);
   });
+
 });
 
 const PORT = process.env.PORT || 3000;

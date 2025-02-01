@@ -31,5 +31,7 @@ window.startGame = function() {
     scene: [BattleScene],
   };
 
-  return new Phaser.Game(config);
+  // 只建立一次遊戲實例
+  gameInstance = new Phaser.Game(config);
+  return gameInstance;
 };

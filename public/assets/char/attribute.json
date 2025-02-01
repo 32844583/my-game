@@ -1,0 +1,28 @@
+{
+  "mano": {
+    "atk": 50,
+    "hp": 200,
+    "energy": 100
+  },
+  "stone": {
+    "atk": 30,
+    "hp": 300,
+    "energy": 120
+  },
+  "red_snail": {
+    "atk": 50,
+    "hp": 200,
+    "energy": 100
+  },
+  "blue_snail": {
+    "atk": 30,
+    "hp": 300,
+    "energy": 120
+  },
+  
+  "home": {
+    "atk": 20,
+    "hp": 400,
+    "energy": 150
+  }
+}

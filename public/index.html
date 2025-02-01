@@ -62,23 +62,33 @@
   <div id="battle">
   </div>
 
-  <!-- 召喚區 -->
+  <!-- 修改後的召喚區，點擊後皆依照 currentPlayer 來決定歸屬 -->
   <div id="summon-container">
     <h3>召喚區</h3>
-    <!-- 直接點擊圖片召喚 -->
     <img 
       src="assets/char/mano/base.png" 
       alt="Mano" 
       class="monster-img"
-      onclick="summonMonster('mano', 1)"
+      onclick="summonMonster('mano')"
     />
     <img 
       src="assets/char/stone/base.png" 
       alt="Stone" 
       class="monster-img"
-      onclick="summonMonster('stone', 2)"
+      onclick="summonMonster('stone')"
     />
-    <!-- 視需求再多加怪物 -->
+    <img 
+      src="assets/char/blue_snail/base.png" 
+      alt="Blue_Snail" 
+      class="monster-img"
+      onclick="summonMonster('blue_snail')"
+    />
+    <img 
+      src="assets/char/red_snail/base.png" 
+      alt="Red_Snail" 
+      class="monster-img"
+      onclick="summonMonster('red_snail')"
+    />
   </div>
 
   <!-- Phaser (最新版本) -->
