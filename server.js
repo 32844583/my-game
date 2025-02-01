@@ -47,6 +47,7 @@ io.on("connection", (socket) => {
 
   socket.on("both_ready", () => {
     const sides = { player1Side: "left", player2Side: "right" }
+    console.log("game_start");
     io.emit("game_start", sides);
   });
 

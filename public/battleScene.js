@@ -6,10 +6,7 @@ import { preloadAssets } from "./preloadAssets.js"; // 引入載入函式
 class BattleScene extends Phaser.Scene {
   constructor() {
     super({ key: "BattleScene" });
-    this.playerHearts = {
-      player1: 3,  // 初始化玩家1的生命值為3顆心
-      player2: 3   // 初始化玩家2的生命值為3顆心
-    };
+
   }
 
   preload() {

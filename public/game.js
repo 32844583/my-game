@@ -1,16 +1,11 @@
-// game.js
-// 讓外部能存取 Phaser 場景
-const PhaserSingleton = {
-  scene: null,
-};
+import { BattleScene } from "./Battle.js";
+import { PrepareScene } from "./Prepare.js";
 
-/**
- * 建立並啟動 Phaser 遊戲。
- * 若想在網頁載入時就自動啟動，則可直接把 new Phaser.Game(...) 寫在最外層。
- */
-window.startGame = function() {
+let gameInstance = null; // 確保遊戲實例只建立一次
+
+export function startGame() {
   if (gameInstance) return gameInstance;
-  
+
   const config = {
     type: Phaser.AUTO,
     scale: {
@@ -19,7 +14,7 @@ window.startGame = function() {
       width: 800,
       height: 600,
     },
-    parent: "battle",
+    parent: "battle", // HTML 容器 id
     physics: {
       default: "matter",
       matter: {
@@ -27,10 +22,12 @@ window.startGame = function() {
         debug: false,
       },
     },
-    scene: [BattleScene],
+    scene: [PrepareScene, BattleScene], // 設定場景
   };
 
-  // 只建立一次遊戲實例
   gameInstance = new Phaser.Game(config);
   return gameInstance;
-};
+}
+startGame();
+// 讓外部可以透過 window 取得 `startGame`
+window.startGame = startGame;

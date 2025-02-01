@@ -1,6 +1,25 @@
 // Prepare.js
 import socket from './NetworkManager.js';
 
+export class PrepareScene extends Phaser.Scene {
+  constructor() {
+    super({ key: "PrepareScene" });
+  }
+  preload() {
+    this.load.audio("selected", "assets/audio/selected.mp3");
+  }
+  create() {
+    this.bgm = this.sound.add("selected", { loop: true, volume: 0.2 });
+    this.bgm.play();
+
+    // 監聽 `game_start` 事件，當 server 廣播時切換場景
+    socket.on("game_start", (sides) => {
+      console.log("game_start");
+      this.scene.start("BattleScene", sides);
+    });
+  }
+}
+
 // ================= 準備階段關鍵變數 =================
 
 // 記錄各玩家在選擇階段所選擇的召喚物
@@ -32,6 +51,7 @@ export function updateUI() {
 function checkBothReady() {
   if (player1Ready && player2Ready) {
     socket.emit("both_ready");
+    console.log("both_ready");
   }
 }
 
@@ -59,11 +79,13 @@ socket.on("player_ready", (data) => {
 document.getElementById("player1-ready").addEventListener("click", () => {
   if (currentPlayer === 1 && !player1Ready) {
     socket.emit("ready", { player: 1 });
+    console.log("player1Ready");
   }
 });
 document.getElementById("player2-ready").addEventListener("click", () => {
   if (currentPlayer === 2 && !player2Ready) {
     socket.emit("ready", { player: 2 });
+    console.log("player2Ready");
   }
 });
 

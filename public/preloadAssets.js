@@ -20,7 +20,7 @@ export function preloadAssets(scene) {
 
   // 音樂資源
   scene.load.audio("battle_bgm", "assets/audio/background.mp3");
-  scene.load.audio("battle_atk", "assets/audio/selected.mp3");
+
   scene.load.audio("battle_die", "assets/audio/die.mp3");
   scene.load.audio("battle_atk", "assets/audio/atk.mp3");
   // 屬性資料
