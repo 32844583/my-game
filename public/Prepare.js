@@ -14,7 +14,6 @@ export class PrepareScene extends Phaser.Scene {
 
     // 監聽 `game_start` 事件，當 server 廣播時切換場景
     socket.on("game_start", (sides) => {
-      console.log("game_start");
       this.scene.start("BattleScene", sides);
     });
   }
@@ -51,14 +50,12 @@ export function updateUI() {
 function checkBothReady() {
   if (player1Ready && player2Ready) {
     socket.emit("both_ready");
-    console.log("both_ready");
   }
 }
 
 // 接收 server 指定玩家編號
 socket.on("player_number", (number) => {
   currentPlayer = number;
-  console.log(`You are Player ${number}`);
   updateUI();
 });
 
@@ -79,13 +76,11 @@ socket.on("player_ready", (data) => {
 document.getElementById("player1-ready").addEventListener("click", () => {
   if (currentPlayer === 1 && !player1Ready) {
     socket.emit("ready", { player: 1 });
-    console.log("player1Ready");
   }
 });
 document.getElementById("player2-ready").addEventListener("click", () => {
   if (currentPlayer === 2 && !player2Ready) {
     socket.emit("ready", { player: 2 });
-    console.log("player2Ready");
   }
 });
 
@@ -143,5 +138,5 @@ export function disableMonsterImage(monsterKey) {
   });
 }
 
-// 為了讓 HTML 中的 onclick 可以存取，將 selectMonster 挂在 global
+// 為了讓 HTML 中的 onclick 可以存取，將 selectMonster 掛在 global
 window.selectMonster = selectMonster;

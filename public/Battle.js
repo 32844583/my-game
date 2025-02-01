@@ -15,7 +15,6 @@ export class BattleScene extends Phaser.Scene {
   init(data) {
     // 接收 `PrepareScene` 傳來的 `sides` 資料
     if (data) {
-      console.log("data")
       player1Side = data.player1Side || "left";
       player2Side = data.player2Side || "right";
     }
@@ -92,54 +91,47 @@ export function updateSummonContainer() {
     img.alt = monsterKey;
     img.className = "monster-img";
     
-    // 利用 onXxx 的方式
     img.onclick = function() {
-      console.log("Clicked:", monsterKey);
-      summonMonster(monsterKey, currentPlayer);
+      summonMonster(monsterKey); // 不傳 currentPlayer
     };
     
     summonGrid.appendChild(img);
-    
   });
-  console.log("summonGrid:", summonGrid);
-  console.log("playerSelections:", playerSelections);
-  console.log("currentPlayer:", currentPlayer);
-  
 }
 
 export function summonMonster(monsterKey, summonedPlayer) {
+  // 檢查是否為本地觸發的召喚
+  const isLocal = (typeof summonedPlayer === "undefined");
 
-  if (window.lastSummonTime && Date.now() - window.lastSummonTime < 1000) return;
-  window.lastSummonTime = Date.now();
-  console.log("monsterKey",monsterKey)
+  // 如果是本地召喚才檢查節流機制
+  if (isLocal && window.lastSummonTime && Date.now() - window.lastSummonTime < 1000) return;
+  if (isLocal) {
+    window.lastSummonTime = Date.now();
+  }
+
   if (monsterKey === "home") return;
 
-  const isLocal = (typeof summonedPlayer === "undefined");
+  // 根據來源決定玩家編號
   const player = isLocal ? currentPlayer : summonedPlayer;
   const side = (player === 1) ? player1Side : player2Side;
-  console.log("player",player)
-  console.log("side",side)
-  console.log("currentScene",currentScene)
-
+  
   if (!side || !currentScene) return;
-
+  
   const scene = currentScene;
   const y = scene.game.config.height / 2;
   const x = (side === "left") ? 100 : (scene.game.config.width - 100);
   const flipX = (side === "left");
   
+  // 若為本地召喚，通知伺服器
   if (isLocal) {
-    console.log("summon_monster")
-    socket.emit("summon_monster", { monsterKey, player, side });
+    socket.emit("summon_monster", { monsterKey, player});
   }
-
+  
   const charKey = `${monsterKey}_${player}_${Date.now()}`;
   const char = new window.Char(scene, x, y, monsterKey, flipX, side);
   activeCharacters.set(charKey, char);
-  console.log("summonMonster")
-  console.log(currentScene);
-  console.log(activeCharacters);
 }
+
 
 socket.on("monster_summoned", (data) => {
   summonMonster(data.monsterKey, data.player);

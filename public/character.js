@@ -151,18 +151,6 @@ class Char {
   showDamage(dmg) {
     const dmgStr = dmg.toString();
     const digits = dmgStr.split('');
-    const digitNames = {
-      '0': 'zero',
-      '1': 'one',
-      '2': 'two',
-      '3': 'three',
-      '4': 'four',
-      '5': 'five',
-      '6': 'six',
-      '7': 'seven',
-      '8': 'eight',
-      '9': 'nine'
-    };
 
     const digitWidth = 20;
     const totalWidth = digits.length * digitWidth;
@@ -170,7 +158,7 @@ class Char {
     const startY = this.sprite.y - 60;
 
     digits.forEach((d, i) => {
-      const key = 'damage_' + digitNames[d];
+      const key = `damage_${d}`; // 直接使用數字作為資源名稱
       const digitImage = this.scene.add.image(startX + i * digitWidth, startY, key);
       digitImage.setOrigin(0.5);
 
@@ -186,6 +174,7 @@ class Char {
       });
     });
   }
+
 
   // 死亡
   die() {
