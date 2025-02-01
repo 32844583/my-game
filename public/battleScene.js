@@ -1,4 +1,8 @@
 // battleScene.js
+
+import { preloadAssets } from "./preloadAssets.js"; // 引入載入函式
+
+
 class BattleScene extends Phaser.Scene {
   constructor() {
     super({ key: "BattleScene" });
@@ -9,54 +13,7 @@ class BattleScene extends Phaser.Scene {
   }
 
   preload() {
-    // 載入 mano
-    this.load.image("mano_base",  "assets/char/mano/base.png");
-    this.load.image("mano_atk",   "assets/char/mano/atk.png");
-    this.load.image("mano_hurt",  "assets/char/mano/hurt.png");
-    this.load.image("mano_die",   "assets/char/mano/die.png");
-
-    // 載入 stone (召喚物)
-    this.load.image("stone_base", "assets/char/stone/base.png");
-    this.load.image("stone_atk",  "assets/char/stone/atk.png");
-    this.load.image("stone_hurt", "assets/char/stone/hurt.png");
-    this.load.image("stone_die",  "assets/char/stone/die.png");
-    // 載入 stone (召喚物)
-    this.load.image("blue_snail_base", "assets/char/blue_snail/base.png");
-    this.load.image("blue_snail_atk",  "assets/char/blue_snail/atk.png");
-    this.load.image("blue_snail_hurt", "assets/char/blue_snail/hurt.png");
-    this.load.image("blue_snail_die",  "assets/char/blue_snail/die.png");
-
-    // 載入 stone (召喚物)
-    this.load.image("red_snail_base", "assets/char/red_snail/base.png");
-    this.load.image("red_snail_atk",  "assets/char/red_snail/atk.png");
-    this.load.image("red_snail_hurt", "assets/char/red_snail/hurt.png");
-    this.load.image("red_snail_die",  "assets/char/red_snail/die.png");
-
-    // 載入 castle (主堡)
-    this.load.image("home_base", "assets/char/home/base.png");
-    this.load.image("home_atk",  "assets/char/home/atk.png");
-    this.load.image("home_hurt", "assets/char/home/hurt.png");
-    this.load.image("home_die",  "assets/char/home/die.png");
-
-    this.load.image("damage_one", "assets/damage/one.png");
-    this.load.image("damage_two", "assets/damage/two.png");
-    this.load.image("damage_three", "assets/damage/three.png");
-    this.load.image("damage_four", "assets/damage/four.png");
-    this.load.image("damage_five", "assets/damage/five.png");
-    this.load.image("damage_six", "assets/damage/six.png");
-    this.load.image("damage_seven", "assets/damage/seven.png");
-    this.load.image("damage_eight", "assets/damage/eight.png");
-    this.load.image("damage_nine", "assets/damage/nine.png");
-    this.load.image("damage_zero", "assets/damage/zero.png");
-
-    // 載入音樂
-    this.load.audio("battle_bgm", "assets/audio/background.mp3");
-    this.load.audio("battle_atk", "assets/audio/atk.mp3");
-    this.load.audio("battle_die", "assets/audio/die.mp3");
-
-    // 在 preload 中
-    this.load.json('attribute', 'assets/char/attribute.json');
-
+    preloadAssets(this); // 調用載入函式
   }
 
   create() {

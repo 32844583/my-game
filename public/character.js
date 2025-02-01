@@ -1,3 +1,4 @@
+// character.js
 // 全域陣列 - 所有角色
 window.Chars = [];
 // 分別存放兩位玩家召喚的角色

@@ -1,5 +1,4 @@
 // game.js
-
 // 讓外部能存取 Phaser 場景
 const PhaserSingleton = {
   scene: null,

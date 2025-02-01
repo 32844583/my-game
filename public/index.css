@@ -1,0 +1,83 @@
+
+/* 基本重置 */
+html, body {
+    margin: 0;
+    padding: 0;
+}
+/* 準備頁面（Lobby）：初始顯示 */
+#lobby {
+    display: block;
+    background: #eee;
+    padding: 20px;
+    text-align: center;
+}
+/* 戰鬥區：遊戲開始後顯示 */
+#battle {
+    display: none;
+    width: 80%;
+    height: 80%;
+    box-sizing: border-box;
+    background: #ccc;
+    position: relative;
+    margin: 20px auto;
+}
+/* 召喚區：戰鬥中使用，初始隱藏 */
+#summon-container {
+    display: none;
+    width: 400px;
+    margin: 20px auto;
+    background: #f0f0f0;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+/* 選擇區：遊戲開始前的角色選取，與召喚區分離 */
+#selection-container {
+    margin: 20px auto;
+    width: 400px;
+    background: #fafafa;
+    padding: 10px;
+    text-align: center;
+    box-sizing: border-box;
+}
+/* 玩家選擇結果區：顯示各玩家選取的召喚物 */
+#player-selections {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px auto;
+    width: 80%;
+    background: #f7f7f7;
+    padding: 10px;
+    box-sizing: border-box;
+}
+#player-selections div {
+    width: 45%;
+    text-align: center;
+}
+/* 以 grid 排列召喚物圖片 */
+.monster-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+.monster-img {
+    width: 60px;
+    cursor: pointer;
+}
+/* （可選）若在戰鬥中需要左右玩家各自的召喚物外框 */
+.player-summons {
+    width: 150px;
+    margin: 0 20px;
+    text-align: center;
+}
+.player-summons h3 {
+    margin-bottom: 10px;
+}
+.frame-slot {
+    width: 100px;
+    height: 100px;
+    margin: 5px auto;
+    background: url('assets/frame.png') no-repeat center center;
+    background-size: contain;
+    position: relative;
+}
