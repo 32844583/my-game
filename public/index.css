@@ -1,36 +1,75 @@
-
-/* 基本重置 */
-html, body {
-    margin: 0;
-    padding: 0;
-}
-/* 準備頁面（Lobby）：初始顯示 */
+/* 準備頁面（Lobby） */
 #lobby {
     display: block;
     background: #eee;
     padding: 20px;
     text-align: center;
 }
-/* 戰鬥區：遊戲開始後顯示 */
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
 #battle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     display: none;
-    width: 80%;
-    height: 80%;
-    box-sizing: border-box;
-    background: #ccc;
-    position: relative;
-    margin: 20px auto;
+    overflow: hidden;
+    background-color: black;
 }
-/* 召喚區：戰鬥中使用，初始隱藏 */
+
+#battle canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+    max-height: 100%;
+}
+
 #summon-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 15%;
     display: none;
-    width: 400px;
-    margin: 20px auto;
-    background: #f0f0f0;
-    text-align: center;
-    padding: 10px;
-    box-sizing: border-box;
+    background: rgba(240, 240, 240, 0.9);
+    z-index: 1000;
 }
+
+/* 其餘樣式保持不變 */
+
+/* 其餘樣式保持不變 */
+/* 召喚區內的怪物圖片排列 */
+#summon-container .monster-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    overflow-x: auto; /* 如果怪物過多，允許橫向滾動 */
+    white-space: nowrap;
+    padding: 5px;
+}
+
+/* 召喚物圖片 */
+.monster-img {
+    width: 80px; /* 調整圖片大小 */
+    height: 80px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.monster-img:hover {
+    transform: scale(1.1); /* 滑鼠懸停時放大 */
+}
+
 /* 選擇區：遊戲開始前的角色選取，與召喚區分離 */
 #selection-container {
     margin: 20px auto;
@@ -40,7 +79,8 @@ html, body {
     text-align: center;
     box-sizing: border-box;
 }
-/* 玩家選擇結果區：顯示各玩家選取的召喚物 */
+
+/* 玩家選擇結果區 */
 #player-selections {
     display: flex;
     justify-content: space-around;
@@ -54,17 +94,15 @@ html, body {
     width: 45%;
     text-align: center;
 }
-/* 以 grid 排列召喚物圖片 */
+
+/* 召喚區與選擇區內部的怪物圖片排列 */
 .monster-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
 }
-.monster-img {
-    width: 60px;
-    cursor: pointer;
-}
-/* （可選）若在戰鬥中需要左右玩家各自的召喚物外框 */
+
+/* （可選）戰鬥中左右玩家的召喚區外框 */
 .player-summons {
     width: 150px;
     margin: 0 20px;

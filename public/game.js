@@ -1,3 +1,4 @@
+// Game.js
 import { BattleScene } from "./Battle.js";
 import { PrepareScene } from "./Prepare.js";
 
@@ -11,10 +12,10 @@ export function startGame() {
     scale: {
       mode: Phaser.Scale.FIT,
       autoCenter: Phaser.Scale.CENTER_BOTH,
-      width: 800,
-      height: 600,
+      width: window.innerWidth * 0.9,  // 讓寬度等於 90vw
+      height: window.innerHeight * 0.9, // 讓高度等於 90vh
     },
-    parent: "battle", // HTML 容器 id
+    parent: "battle", 
     physics: {
       default: "matter",
       matter: {
@@ -22,7 +23,7 @@ export function startGame() {
         debug: false,
       },
     },
-    scene: [PrepareScene, BattleScene], // 設定場景
+    scene: [PrepareScene, BattleScene],
   };
 
   gameInstance = new Phaser.Game(config);

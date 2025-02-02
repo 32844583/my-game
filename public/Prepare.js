@@ -6,10 +6,10 @@ export class PrepareScene extends Phaser.Scene {
     super({ key: "PrepareScene" });
   }
   preload() {
-    this.load.audio("selected", "assets/audio/selected.mp3");
+    this.load.audio("prepare", "assets/audio/prepare.mp3");
   }
   create() {
-    this.bgm = this.sound.add("selected", { loop: true, volume: 0.2 });
+    this.bgm = this.sound.add("prepare", { loop: true, volume: 0.2 });
     this.bgm.play();
 
     // 監聽 `game_start` 事件，當 server 廣播時切換場景

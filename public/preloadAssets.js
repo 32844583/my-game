@@ -20,9 +20,11 @@ export function preloadAssets(scene) {
 
   // 音樂資源
   scene.load.audio("battle_bgm", "assets/audio/background.mp3");
-
   scene.load.audio("battle_die", "assets/audio/die.mp3");
   scene.load.audio("battle_atk", "assets/audio/atk.mp3");
+
+  scene.load.image("battle_bg", "assets/background.png"); // 載入背景圖
+  
   // 屬性資料
   scene.load.json("attribute", "assets/char/attribute.json");
 }

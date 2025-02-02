@@ -1,3 +1,4 @@
+// Battle.js
 import socket from './NetworkManager.js';
 import { playerSelections, currentPlayer } from './Prepare.js';
 import { preloadAssets } from "./preloadAssets.js";
@@ -24,7 +25,10 @@ export class BattleScene extends Phaser.Scene {
   }
 
   create() {
-    this.cameras.main.setBackgroundColor("#87CEEB");
+    this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, "battle_bg")
+      .setOrigin(0.5, 0.5)
+      .setDisplaySize(this.cameras.main.width, this.cameras.main.height);
+      
     currentScene = this;
 
     this.matter.world.on("collisionstart", (event) => {
