@@ -1,80 +1,98 @@
-<!--index.html-->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
   <title>貓咪小戰爭</title>
-
   <link rel=stylesheet type="text/css" href="index.css">
 </head>
 <body>
-  <!-- 準備頁面（Lobby）：包含準備按鈕、選擇區與玩家選擇結果 -->
-  <div id="lobby">
+  <div id="lobby" class="ancient-border">
     <h2>玩家準備頁面</h2>
     <button id="player1-ready">玩家1 準備</button>
     <button id="player2-ready">玩家2 準備</button>
     <p id="status">等待玩家準備中...</p>
     
-    <!-- 選擇區：玩家在遊戲開始前挑選召喚物（選擇區與召喚區邏輯不同） -->
-    <div id="selection-container">
+    <div id="selection-container" class="ancient-border">
       <h3>選擇區</h3>
       <div class="monster-grid">
-        <img src="assets/char/mano/base.png" alt="Mano" class="monster-img" onclick="selectMonster('mano', this)" />
-        <img src="assets/char/stone/base.png" alt="Stone" class="monster-img" onclick="selectMonster('stone', this)" />
-        <img src="assets/char/blue_snail/base.png" alt="Blue Snail" class="monster-img" onclick="selectMonster('blue_snail', this)" />
-        <img src="assets/char/red_snail/base.png" alt="Red Snail" class="monster-img" onclick="selectMonster('red_snail', this)" />
-        <img src="assets/char/cellion/base.png" alt="Mano" class="monster-img" onclick="selectMonster('cellion', this)" />
-        <img src="assets/char/grupin/base.png" alt="Stone" class="monster-img" onclick="selectMonster('grupin', this)" />
-        <img src="assets/char/lioner/base.png" alt="Blue Snail" class="monster-img" onclick="selectMonster('lioner', this)" />
-        <img src="assets/char/lucida/base.png" alt="Red Snail" class="monster-img" onclick="selectMonster('lucida', this)" />
-        <img src="assets/char/dark_yeti/base.png" alt="Mano" class="monster-img" onclick="selectMonster('dark_yeti', this)" />
-        <img src="assets/char/king_clang/base.png" alt="Stone" class="monster-img" onclick="selectMonster('king_clang', this)" />
-        <img src="assets/char/lycanthrope/base.png" alt="Blue Snail" class="monster-img" onclick="selectMonster('lycanthrope', this)" />
-        <img src="assets/char/yeti/base.png" alt="Red Snail" class="monster-img" onclick="selectMonster('yeti', this)" />
+        <div class="monster-img-container">
+          <img src="assets/char/mano/base.png" alt="Mano" class="monster-img" onclick="selectMonster('mano', this)" />
+          <img src="assets/frame.png" class="frame-overlay" />
+        </div>
+        <div class="monster-img-container">
+          <img src="assets/char/stone/base.png" alt="Stone" class="monster-img" onclick="selectMonster('stone', this)" />
+          <img src="assets/frame.png" class="frame-overlay" />
+        </div>
+        <div class="monster-img-container">
+          <img src="assets/char/blue_snail/base.png" alt="Blue Snail" class="monster-img" onclick="selectMonster('blue_snail', this)" />
+          <img src="assets/frame.png" class="frame-overlay" />
+        </div>
+        <div class="monster-img-container">
+          <img src="assets/char/red_snail/base.png" alt="Red Snail" class="monster-img" onclick="selectMonster('red_snail', this)" />
+          <img src="assets/frame.png" class="frame-overlay" />
+        </div>
+        <div class="monster-img-container">
+          <img src="assets/char/cellion/base.png" alt="Cellion" class="monster-img" onclick="selectMonster('cellion', this)" />
+          <img src="assets/frame.png" class="frame-overlay" />
+        </div>
+        <div class="monster-img-container">
+          <img src="assets/char/grupin/base.png" alt="Grupin" class="monster-img" onclick="selectMonster('grupin', this)" />
+          <img src="assets/frame.png" class="frame-overlay" />
+        </div>
+        <div class="monster-img-container">
+          <img src="assets/char/lioner/base.png" alt="Lioner" class="monster-img" onclick="selectMonster('lioner', this)" />
+          <img src="assets/frame.png" class="frame-overlay" />
+        </div>
+        <div class="monster-img-container">
+          <img src="assets/char/lucida/base.png" alt="Lucida" class="monster-img" onclick="selectMonster('lucida', this)" />
+          <img src="assets/frame.png" class="frame-overlay" />
+        </div>
+        <div class="monster-img-container">
+          <img src="assets/char/dark_yeti/base.png" alt="Dark Yeti" class="monster-img" onclick="selectMonster('dark_yeti', this)" />
+          <img src="assets/frame.png" class="frame-overlay" />
+        </div>
+        <div class="monster-img-container">
+          <img src="assets/char/king_clang/base.png" alt="King Clang" class="monster-img" onclick="selectMonster('king_clang', this)" />
+          <img src="assets/frame.png" class="frame-overlay" />
+        </div>
+        <div class="monster-img-container">
+          <img src="assets/char/lycanthrope/base.png" alt="Lycanthrope" class="monster-img" onclick="selectMonster('lycanthrope', this)" />
+          <img src="assets/frame.png" class="frame-overlay" />
+        </div>
+        <div class="monster-img-container">
+          <img src="assets/char/yeti/base.png" alt="Yeti" class="monster-img" onclick="selectMonster('yeti', this)" />
+          <img src="assets/frame.png" class="frame-overlay" />
+        </div>
       </div>
     </div>
     
-    <!-- 玩家選擇結果區：同步顯示各玩家已選擇的召喚物 -->
     <div id="player-selections">
-      <div id="player1-selection">
+      <div id="player1-selection" class="ancient-border">
         <h4>玩家1 已選擇：</h4>
-        <!-- 選取的角色圖片會依序加入這裡 -->
       </div>
-      <div id="player2-selection">
+      <div id="player2-selection" class="ancient-border">
         <h4>玩家2 已選擇：</h4>
-        <!-- 選取的角色圖片會依序加入這裡 -->
       </div>
     </div>
   </div>
   
-  <!-- 戰鬥區：遊戲開始後，Phaser 將在此建立戰鬥場景 -->
   <div id="battle">
-    <!-- Phaser 戰鬥畫面 -->
   </div>
   
-  <!-- 召喚區：進入戰鬥後玩家可透過此區進行召喚（邏輯與選擇區不同） -->
   <div id="summon-container">
     <h3>召喚區</h3>
     <div class="monster-grid">
     </div>
   </div>
   
-  <!-- 載入 Phaser 與 Socket.IO -->
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.87.0/dist/phaser.min.js"></script>
   <script src="https://cdn.socket.io/4.8.1/socket.io.min.js" 
-          integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+" 
+          integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
           crossorigin="anonymous"></script>
   
-  <!-- 自訂腳本：角色定義、遊戲啟動、網路邏輯（內含 summonMonster 與 selectMonster 相關函式） -->
-  <!-- 先載入角色定義 -->
   <script src="character.js"></script>
-
-  <!-- 最後載入網路相關（networking.js） -->
   <script type="module" src="NetworkManager.js"></script>
-  <!-- <script type="module" src="Prepare.js"></script> -->
   <script type="module" src="Battle.js"></script>
   <script type="module" src="Game.js"></script>
 </body>
 </html>
-
-
