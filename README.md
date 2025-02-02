@@ -15,10 +15,12 @@
 my-game/
  ├── public/
  │    ├── index.html
- │    ├── game.js # 建立並啟動 Phaser 遊戲
- │    ├── battleScene.js # 戰鬥場景設置
- │    ├── networking.js # 玩家準備室以及socket設置處
- │    ├── character.js # 召喚物控制
+ │    ├── Battle.js # 戰鬥場景設置(含socket監聽)
+ │    ├── Prepare.js # 準備場景設置(含socket監聽)
+ │    ├── character.js # 召喚物們的屬性、行為、狀態
+ │    ├── preloadAssets # 資源的預先載入
+ │    ├── NetworkManager.js # socket 連接設定
+ │    ├── Game # Phaser 物件初始化
  │    ├── assets/
  │    │    ├── char/
  │    │    │    ├── mano/
@@ -26,9 +28,38 @@ my-game/
  │    │    │    │    ├── atk.png
  │    │    │    │    ├── hurt.png
  │    │    │    │    ├── die.png
+ │    │    │    ├── stone/
+ │    │    │    │    ├── base.png
+ │    │    │    │    ├── atk.png
+ │    │    │    │    ├── hurt.png
+ │    │    │    │    ├── die.png
+ │    │    │    ├── home/
+ │    │    │    │    ├── base.png
+ │    │    │    │    ├── atk.png
+ │    │    │    │    ├── hurt.png
+ │    │    │    │    ├── die.png
+ │    │    │    ├── attribute.json
+ │    │    ├── audio/
+ │    │    │    ├── background.mp3
+ │    │    │    ├── atk.mp3
+ │    │    │    ├── die.mp3
+ │    │    │    ├── prepare.mp3
+ │    │    ├── damage/
+ │    │    │    ├── one.png
+ │    │    │    ├── two.png
+ │    │    │    ├── three.png
+ │    │    │    ├── four.png
+ │    │    │    ├── five.png
+ │    │    │    ├── six.png
+ │    │    │    ├── seven.png
+ │    │    │    ├── eight.png
+ │    │    │    ├── nine.png
+ │    │    │    ├── zero.png
+ │    │    ├── frame.png
+ │    │    ├── background.png
  ├── server.js
  ├── package.json
- ├── node_modules/  (如果有安裝 npm 模組)
+ ├── node_modules/ 
 ```
 ```
 // package.json
@@ -51,3 +82,10 @@ my-game/
     }
 }
 ```
+下次目標
+- 任務: 玩家已選擇區介面
+在player-selections內設計六個選擇框(box)，不要使用frame.png，在這個選擇框內還有一個存放召喚物圖片的框(inner)，inner簡單的黑框就好，外面一層(box)的框為背景為深藍色，創建一個script，當使用者觸發onclick後除了執行selectMonster外，接下來還會執行你創建的script，該script將圖片存放到inner內。box要平均分配填滿pinner-selection並且之間保持一定的空隙，然後inner填滿白色並覆蓋在box上方，而box則是填滿深藍色，box比inner大一點，box的大小取決於平均分配填滿該pinner-selection跟pbox-selection，而inner的大小=box縮放70%。
+
+- 任務: 使用game來儲存全域變數
+- 任務: 死亡的特效是圖片淡出
+- 任務: 在character為召喚物添加energy屬性。
